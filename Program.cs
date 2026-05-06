@@ -1,12 +1,11 @@
 var builder = WebApplication.CreateBuilder(args);
 
-// ✅ Add services
-builder.Services.AddControllers();   // ⭐ IMPORTANT
+// Add services
+builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// ✅ Add CORS BEFORE builder.Build()
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll",
@@ -17,19 +16,21 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// ✅ Middleware
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-// app.UseHttpsRedirection();  // keep commented
+// app.UseHttpsRedirection();
 
-app.UseCors("AllowAll");   // ⭐ AFTER builder.Build()
+app.UseCors("AllowAll");
 
 app.UseAuthorization();
 
-app.MapControllers();      // ⭐ VERY IMPORTANT
+app.MapControllers();
+
+// ⭐ ADD THIS LINE
+app.Urls.Add("http://0.0.0.0:10000");
 
 app.Run();
